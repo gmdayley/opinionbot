@@ -15,7 +15,6 @@ board.on("ready", function() {
 module.exports = {
   scale: function(value) {
     if (servo) {
-      //servo.cw(value);
       servo.move(value);
     }
   }
