@@ -1,10 +1,13 @@
-var io = require('socket.io'),
-    express = require('express');
+var express = require('express')
+  , app = express()
+  , server = require('http').createServer(app)
+  , io = require('socket.io').listen(server);
 
-var app = express.createServer(),
-    io = io.listen(app);
 
-app.listen(3009);
+server.listen(3009);
+
+app.use(express.static(__dirname + '/www'));
+
 
 var voters = {
     length: 0
