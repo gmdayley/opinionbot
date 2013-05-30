@@ -72,6 +72,11 @@ io.sockets.on('connection', function (socket) {
         bot.scale(totals);
     });
 
+    socket.on('actuate', function(scale) {
+        // Go bots
+        bot.scale(totals);
+    });
+
 });
 
 var generateGuid = function() {
