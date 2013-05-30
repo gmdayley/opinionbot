@@ -4,7 +4,7 @@ var five = require("johnny-five"),
 var servo;
 board.on("ready", function() {
   servo = new five.Servo({
-    pin: "O5"
+    pin: "O5",
     range: [ 0, 180 ],
     type: "standard",
     startAt: 90,
@@ -15,7 +15,8 @@ board.on("ready", function() {
 module.exports = {
   scale: function(value) {
     if (servo) {
-      servo.cw(value);
+      //servo.cw(value);
+      servo.move(value);
     }
   }
 };
