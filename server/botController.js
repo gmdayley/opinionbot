@@ -1,5 +1,7 @@
 var five = require("johnny-five"),
-   board = new five.Board();
+   board = new five.Board(),
+   led = new five.Led('O5');
+
 
 var servo;
 board.on("ready", function() {
@@ -17,5 +19,9 @@ module.exports = {
     if (servo) {
       servo.move(value);
     }
+  },
+
+  stobeLed: function(value) {
+  	led.strobe(value);
   }
 };
