@@ -5,8 +5,8 @@ var express = require('express')
 
 
 server.listen(3009);
-
-app.use(express.static(__dirname + '/www'));
+console.log(__dirname);
+app.use(express.static('www'));
 
 
 var voters = {
