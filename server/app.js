@@ -9,6 +9,7 @@ server.listen(3009);
 console.log(__dirname);
 app.use(express.static('www'));
 
+var vtrs = [];
 
 var voters = {
     length: 0
@@ -16,7 +17,9 @@ var voters = {
     totals = {
         pos: 0,
         neg: 0
-    };
+    },
+
+    count = 0;
 
 io.configure('development', function(){
     io.enable('browser client etag');
@@ -37,8 +40,13 @@ io.sockets.on('connection', function (socket) {
     // Register voter
     var guid = generateGuid();
     socket.guid = guid;
-    voters[guid] = {socket: socket, vote:0};
-    voters.length++;
+    //voters[guid] = {socket: socket, vote:0};
+    //voters.length++;
+
+
+    vtrs[guid] = 0;
+
+    console.log(vtrs);
 
 
     // Send ack of connection
@@ -48,27 +56,6 @@ io.sockets.on('connection', function (socket) {
     });
 
 
-
-
-    // Voter
-    socket.on('request registration', function(callback) {
-        var guid = generateGuid();
-        if (callback) callback(guid);
-    });
-
-    socket.on('register voter', function(guid, callback) {
-        socket.guid = guid;
-        if (voters[guid]) {
-            voters[guid].socket = socket;
-            console.log('Reattached: ' + guid);
-        }
-        else {
-            voters[guid] = {socket: socket, vote: 0};
-            voters.length++;
-            console.log('Registered: ' + guid);
-        }
-        if (callback) callback(true);
-    });
 
     socket.on('vote', function(vote) {
         var prior = voters[socket.guid].vote;
@@ -91,22 +78,31 @@ io.sockets.on('connection', function (socket) {
         bot.scale(scale);
     });
 
+
+
     socket.on('v', function(vote) {
-        var prior = voters[socket.guid].vote;
-        var pos = ((vote > 0)? vote : 0) - ((prior > 0)? prior : 0);
-        var neg = ((vote < 0)? vote : 0) - ((prior < 0)? prior : 0);
-        voters[socket.guid].vote = vote;
-        
-        totals.pos += pos;
-        totals.neg += -neg;        
-        totals.cnt = voters.length;
-        
-        console.log(totals);
-        socket.broadcast.emit('score', totals);
-        socket.emit('score', totals);
+        vtrs[guid] = vote;
+        var voteTotal = calculateVotes();
+
+        console.log(voteTotal);
+
     });
 
 });
+
+
+var calculateVotes = function(){
+    console.log('voters', vtrs);
+
+    var total = 0;
+
+
+    for(var guid in vtrs) {
+        total += vtrs[guid];
+    }
+
+    return total;
+}
 
 
 
