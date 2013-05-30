@@ -6,7 +6,7 @@
 
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
-		  var socket = io.connect('http://localhost');
+		  var socket = io.connect('http://172.20.43.177');
 		  socket.on('ack', function (data) {
 		    console.log(data);
 		    socket.emit('my other event', { my: 'data' });
