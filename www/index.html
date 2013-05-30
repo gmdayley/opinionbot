@@ -1,28 +1,81 @@
 <html>
-	<head></head>
-	<body>
-		<h1>Start</h1>
+    <head>
+        <style>
+            .button {
+                position: absolute;
+                top: 7px;
+                left: 7px;
+                width: 100px;
+            }
+            .flip {
+                left: 707px;
+            }
+        </style>
 
-		<input id="servo0" type="range" min="0" max="180">
+    </head>
+    <body>
+        <!--input id="servo0" type="range" min="0" max="180"-->
+        <video id='cam' autoplay='true' width='800' height='600'></video>
+        <img id='btn_right' class='button flip' src='img/button_round_blue.png'></img>
+        <img id='btn_left' class='button' src='img/button_round_blue.png'></img>
 
+        <script src="js/md.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('http://172.20.42.65');
+            // var socket = io.connect('http://172.20.43.177');
+            socket.on('ack', function (data) {
+                console.log(data);
+            });
 
-		<script src="/socket.io/socket.io.js"></script>
-		<script>
-		  // var socket = io.connect('http://172.20.42.65');
-		  var socket = io.connect('http://172.20.43.177');
-		  socket.on('ack', function (data) {
-		    console.log(data);
-		    socket.emit('my other event', { my: 'data' });
-		  });
+            var btnRight = document.getElementById('btn_right');
+            var btnLeft = document.getElementById('btn_left');
+            var green = 'img/button_round_green.png';
+            var normal = 'img/button_round_blue.png';
 
+            var cam = document.getElementById('cam');
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+            navigator.getUserMedia({video:true}, function(stream) {
+                cam.src = window.webkitURL.createObjectURL(stream);
+                var md = new MotionDetector(cam);
 
-		  var servo0 = document.getElementById('servo0');
-		  servo0.addEventListener('change', function(evt){
-		  		console.log(servo0.value);
+                var threshold = 7;
 
-		  		socket.emit('actuate', servo0.value);
-		  });
+                setTimeout(function() {
+                    md.detect(function() {
+                        btnLeft.src = green;
+                        setTimeout(function() {
+                            btnLeft.src = normal;
+                        }, 1000);
+                        socket.emit('v', -1);
+                    }, threshold, {
+                        x: 0,
+                        y: 0,
+                        w: 100,
+                        h: 100
+                    });
 
-		</script>
-	</body>
+                    md.detect(function() {
+                        btnRight.src = green;
+                        setTimeout(function() {
+                            btnRight.src = normal;
+                        }, 1000);
+                        socket.emit('v', 1);
+                    }, threshold, {
+                        x: 700,
+                        y: 0,
+                        w: 100,
+                        h: 100
+                    });
+                }, 5000);
+            });
+
+            // var servo0 = document.getElementById('servo0');
+            // servo0.addEventListener('change', function(evt) {
+            //     console.log(servo0.value);
+            //     socket.emit('actuate', servo0.value);
+            // });
+
+        </script>
+    </body>
 </html>
