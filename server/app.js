@@ -2,7 +2,7 @@ var express = require('express')
   , app = express()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server)
-  , bot = require('./botController');
+  // , bot = require('./botController');
 
 
 server.listen(3009);
@@ -34,7 +34,21 @@ io.configure('development', function(){
 io.sockets.on('connection', function (socket) {
     var clientId = socket.id;
 
-    socket.emit('ack', { message: 'You are connected.' });
+    // Register voter
+    var guid = generateGuid();
+    socket.guid = guid;
+    voters[guid] = {socket: socket, vote:0};
+    voters.length++;
+
+
+    // Send ack of connection
+    socket.emit('ack', { 
+        message: 'You are connected.',
+        id: guid
+    });
+
+
+
 
     // Voter
     socket.on('request registration', function(callback) {
@@ -77,7 +91,25 @@ io.sockets.on('connection', function (socket) {
         bot.scale(scale);
     });
 
+    socket.on('v', function(vote) {
+        var prior = voters[socket.guid].vote;
+        var pos = ((vote > 0)? vote : 0) - ((prior > 0)? prior : 0);
+        var neg = ((vote < 0)? vote : 0) - ((prior < 0)? prior : 0);
+        voters[socket.guid].vote = vote;
+        
+        totals.pos += pos;
+        totals.neg += -neg;        
+        totals.cnt = voters.length;
+        
+        console.log(totals);
+        socket.broadcast.emit('score', totals);
+        socket.emit('score', totals);
+    });
+
 });
+
+
+
 
 var generateGuid = function() {
     var mask = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';

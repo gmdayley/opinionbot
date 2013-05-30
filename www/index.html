@@ -3,8 +3,7 @@
 	<body>
 		<h1>Start</h1>
 
-		<input>	
-		<button>
+		<input id="servo0" type="range" min="0" max="180">
 
 
 		<script src="/socket.io/socket.io.js"></script>
@@ -14,6 +13,15 @@
 		    console.log(data);
 		    socket.emit('my other event', { my: 'data' });
 		  });
+
+
+		  var servo0 = document.getElementById('servo0');
+		  servo0.addEventListener('change', function(evt){
+		  		console.log(servo0.value);
+
+		  		socket.emit('actuate', servo0.value);
+		  });
+
 		</script>
 	</body>
 </html>

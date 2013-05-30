@@ -1,0 +1,30 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
+2 info using npm@1.2.18
+3 info using node@v0.10.4
+4 verbose read json /Users/gmdayley/dev/code/opinionbot/package.json
+5 warn package.json OpinionBot@0.0.1-00 No README.md file found!
+6 verbose run-script [ 'prestart', 'start', 'poststart' ]
+7 info prestart OpinionBot@0.0.1-00
+8 info start OpinionBot@0.0.1-00
+9 verbose unsafe-perm in lifecycle true
+10 silly exec sh "-c" "node server/app"
+11 silly sh,-c,node server/app,/Users/gmdayley/dev/code/opinionbot spawning
+12 info OpinionBot@0.0.1-00 Failed to exec start script
+13 error OpinionBot@0.0.1-00 start: `node server/app`
+13 error `sh "-c" "node server/app"` failed with 8
+14 error Failed at the OpinionBot@0.0.1-00 start script.
+14 error This is most likely a problem with the OpinionBot package,
+14 error not with npm itself.
+14 error Tell the author that this fails on your system:
+14 error     node server/app
+14 error You can get their info via:
+14 error     npm owner ls OpinionBot
+14 error There is likely additional logging output above.
+15 error System Darwin 12.3.0
+16 error command "node" "/usr/local/bin/npm" "start"
+17 error cwd /Users/gmdayley/dev/code/opinionbot
+18 error node -v v0.10.4
+19 error npm -v 1.2.18
+20 error code ELIFECYCLE
+21 verbose exit [ 1, true ]
