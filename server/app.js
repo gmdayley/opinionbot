@@ -74,7 +74,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('actuate', function(scale) {
         // Go bots
-        bot.scale(totals);
+        bot.scale(scale);
     });
 
 });
