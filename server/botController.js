@@ -4,7 +4,7 @@ var five = require("johnny-five"),
 var servo;
 board.on("ready", function() {
   servo = new five.Servo({
-    pin: "O0"
+    pin: "O5"
   });
 });
 
