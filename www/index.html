@@ -10,6 +10,9 @@
             .flip {
                 left: 707px;
             }
+            #cam {
+                -webkit-transform: rotateY(180deg);
+            }
         </style>
 
     </head>
@@ -43,9 +46,9 @@
 
                 setTimeout(function() {
                     md.detect(function() {
-                        btnLeft.src = green;
+                        btnRight.src = green;
                         setTimeout(function() {
-                            btnLeft.src = normal;
+                            btnRight.src = normal;
                         }, 1000);
                         socket.emit('v', -1);
                     }, threshold, {
@@ -56,9 +59,9 @@
                     });
 
                     md.detect(function() {
-                        btnRight.src = green;
+                        btnLeft.src = green;
                         setTimeout(function() {
-                            btnRight.src = normal;
+                            btnLeft.src = normal;
                         }, 1000);
                         socket.emit('v', 1);
                     }, threshold, {

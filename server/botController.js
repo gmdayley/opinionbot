@@ -1,9 +1,8 @@
 var five = require("johnny-five"),
-   board = new five.Board(),
-   led = new five.Led('O5');
+   board = new five.Board();
 
 
-var servo;
+var servo, led;
 board.on("ready", function() {
   servo = new five.Servo({
     pin: "O5",
@@ -12,6 +11,7 @@ board.on("ready", function() {
     startAt: 90,
     center: true
   });
+  led = new five.Led('O0');
 });
 
 module.exports = {
@@ -21,7 +21,10 @@ module.exports = {
     }
   },
 
-  stobeLed: function(value) {
-  	led.strobe(value);
+  led: function(value) {
+    led.on();
+    setTimeout(function() {
+      led.off();
+    }, value);
   }
 };

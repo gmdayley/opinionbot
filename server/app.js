@@ -57,7 +57,8 @@ io.sockets.on('connection', function (socket) {
         var scaled = (voteTotal * 90) + 90;
 
         console.log(scaled);
-        bot.scale(180 - scaled);
+        bot.scale(scaled);
+        bot.led(200);
 
     });
 
