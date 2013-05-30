@@ -5,6 +5,10 @@ var servo;
 board.on("ready", function() {
   servo = new five.Servo({
     pin: "O5"
+    range: [ 0, 180 ],
+    type: "standard",
+    startAt: 90,
+    center: true
   });
 });
 
