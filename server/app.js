@@ -1,7 +1,8 @@
 var express = require('express')
   , app = express()
   , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server);
+  , io = require('socket.io').listen(server)
+  , bot = require('./botController');
 
 
 server.listen(3009);
@@ -66,6 +67,9 @@ io.sockets.on('connection', function (socket) {
         totals.cnt = voters.length;
         socket.broadcast.emit('score', totals);
         socket.emit('score', totals);
+
+        // Go bots
+        bot.scale(totals);
     });
 
 });
