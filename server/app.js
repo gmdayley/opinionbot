@@ -33,17 +33,13 @@ io.sockets.on('connection', function (socket) {
     vtrs[guid] = 0;
     vtrCount++;
 
-
     console.log(vtrs);
-
 
     // Send ack of connection
     socket.emit('ack', { 
         message: 'You are connected.',
         id: guid
     });
-
-
 
     socket.on('actuate', function(scale) {
         // Go bots
@@ -77,9 +73,6 @@ var calculateVotes = function(){
 
     return total / vtrCount;
 }
-
-
-
 
 var generateGuid = function() {
     var mask = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
